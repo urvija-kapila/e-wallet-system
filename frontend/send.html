@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Send Money</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="container">
+    <h2>Send Money</h2>
+
+    <input type="number" id="receiver" placeholder="Receiver ID"><br><br>
+    <input type="number" id="amount" placeholder="Amount"><br><br>
+    <input type="password" id="password" placeholder="Enter your password to confirm"><br><br>
+
+    <button type="button" onclick="sendMoney()">Send</button>
+
+    <p id="message"></p>
+
+    <br>
+    <button onclick="goBack()">Back to Dashboard</button>
+</div>
+<script src="js/send.js"></script>
+</body>
+</html>

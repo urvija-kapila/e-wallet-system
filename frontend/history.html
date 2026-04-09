@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Transaction History</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="container">
+    <h2>Transaction History</h2>
+
+    <table border="1" align="center">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Sender</th>
+                <th>Receiver</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Time</th>
+            </tr>
+        </thead>
+        <tbody id="historyTable">
+        </tbody>
+    </table>
+
+    <br>
+    <button onclick="goBack()">Back to Dashboard</button>
+</div>
+<script src="js/history.js"></script>
+</body>
+</html>
