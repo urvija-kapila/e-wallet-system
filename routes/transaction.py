@@ -27,6 +27,12 @@ def send_money():
     user = cur.fetchone()
 
     if not user or not check_password(password, user[0].encode('utf-8')):
+        cur.execute("""
+            INSERT INTO transactions (sender_id, receiver_id, amount, status)
+            VALUES (%s, %s, %s, %s)
+        """, (sender_id, receiver_id, amount, "FAILED"))
+        mysql.connection.commit()
+
         return jsonify({"error": "Incorrect password"}), 401
 
     if not receiver_id or not amount:
@@ -50,6 +56,12 @@ def send_money():
         sender_wallet = cur.fetchone()
 
         if not sender_wallet or sender_wallet[0] < amount:
+            cur.execute("""
+                INSERT INTO transactions (sender_id, receiver_id, amount, status)
+                VALUES (%s, %s, %s, %s)
+            """, (sender_id, receiver_id, amount, "FAILED"))
+            mysql.connection.commit()
+
             return jsonify({"error": "Insufficient balance"}), 400
 
         # Check receiver exists
@@ -57,6 +69,12 @@ def send_money():
         receiver_wallet = cur.fetchone()
 
         if not receiver_wallet:
+            cur.execute("""
+                INSERT INTO transactions (sender_id, receiver_id, amount, status)
+                VALUES (%s, %s, %s, %s)
+            """, (sender_id, receiver_id, amount, "FAILED"))
+            mysql.connection.commit()
+
             return jsonify({"error": "Receiver not found"}), 404
 
         # Deduct from sender
@@ -102,10 +120,18 @@ def transaction_history():
     cur = mysql.connection.cursor()
 
     cur.execute("""
-        SELECT transaction_id, sender_id, receiver_id, amount, status, created_at
-        FROM transactions
-        WHERE sender_id=%s OR receiver_id=%s
-        ORDER BY created_at DESC
+        SELECT 
+            t.transaction_id,
+            s.name AS sender_name,
+            r.name AS receiver_name,
+            t.amount,
+            t.status,
+            t.created_at
+        FROM transactions t
+        JOIN users s ON t.sender_id = s.user_id
+        JOIN users r ON t.receiver_id = r.user_id
+        WHERE t.sender_id=%s OR t.receiver_id=%s
+        ORDER BY t.created_at DESC
     """, (user_id, user_id))
 
     transactions = cur.fetchall()
@@ -115,8 +141,8 @@ def transaction_history():
     for txn in transactions:
         result.append({
             "transaction_id": txn[0],
-            "sender_id": txn[1],
-            "receiver_id": txn[2],
+            "sender_name": txn[1],
+            "receiver_name": txn[2],
             "amount": float(txn[3]),
             "status": txn[4],
             "timestamp": txn[5]

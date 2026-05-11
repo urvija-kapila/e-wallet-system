@@ -34,6 +34,7 @@ function fetchUser() {
     .then(res => res.json())
     .then(data => {
         document.getElementById("username").innerText = "Welcome, " + data.name;
+        document.getElementById("nav-user").innerText = "Hi, " + data.name;
     });
 }
 
@@ -45,7 +46,38 @@ function goToHistory() {
     window.location.href = "history.html";
 }
 
+function showQR() {
+    const token = localStorage.getItem("token");
+
+    fetch("http://127.0.0.1:5000/auth/me", {
+        headers: { "Authorization": token }
+    })
+    .then(res => res.json())
+    .then(data => {
+
+        const payload = JSON.stringify({
+            user_id: data.user_id,
+            name: data.name
+        });
+
+        // clear old QR if exists
+        document.getElementById("qrcode").innerHTML = "";
+
+        new QRCode(document.getElementById("qrcode"), {
+            text: payload,
+            width: 200,
+            height: 200
+        });
+
+        document.getElementById("qrBox").style.display = "block";
+    });
+}
+
 function logout() {
-    localStorage.removeItem("token");
-    window.location.href = "index.html";
+    const confirmLogout = confirm("Are you sure you want to logout?");
+    
+    if (confirmLogout) {
+        localStorage.removeItem("token");
+        window.location.href = "index.html";
+    }
 }

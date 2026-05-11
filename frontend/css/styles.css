@@ -1,61 +1,353 @@
+/* GLOBAL */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea, #764ba2);
     margin: 0;
-    padding: 0;
-    text-align: center;
+    font-family: 'Segoe UI', sans-serif;
+    background: #f4f6fb;
+}
+
+/* NAVBAR */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.logo {
+    font-weight: bold;
+    font-size: 18px;
     color: #333;
 }
 
-.container {
-    background: white;
-    width: 600px;
-    margin: 80px auto;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 
+.nav-right span {
+    color: #555;
+    font-size: 14px;
+}
+
+.navbar button {
+    padding: 8px 16px;
+    border: none;
+    background: linear-gradient(45deg, #5a67d8, #7f53ac);
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* MAIN CONTENT */
+.main {
+    padding: 30px;
+}
+
+/* HEADINGS */
 h2 {
+    margin-bottom: 5px;
+}
+
+#username {
+    color: #666;
     margin-bottom: 20px;
 }
 
-input {
-    width: 90%;
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 6px;
-    border: 1px solid #ccc;
+/* CARD */
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
 }
 
-button {
-    padding: 10px 20px;
-    margin: 10px;
+#balance {
+    font-size: 28px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+/* ACTION BUTTONS */
+.card button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
     border: none;
-    border-radius: 6px;
-    background: #667eea;
+    border-radius: 8px;
+    background: linear-gradient(45deg, #5a67d8, #7f53ac);
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.card button:hover {
+    transform: translateY(-3px);
+    opacity: 0.9;
+}
+
+.card-btn {
+    margin-top: 15px;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(45deg, #5a67d8, #7f53ac);
     color: white;
     cursor: pointer;
-    transition: 0.3s;
 }
 
-button:hover {
-    background: #5a67d8;
+.balance-card {
+    background: linear-gradient(135deg, #5a67d8, #7f53ac);
+    color: white;
+    padding: 30px;
+}
+
+.balance-card h1 {
+    font-size: 40px;
+    margin: 10px 0;
+}
+
+.label {
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+.dashboard-grid {
+    display: flex;
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.dashboard-grid .card {
+    flex: 1;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.4);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    width: 300px;
+    text-align: center;
+}
+
+.modal-content input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.modal-actions {
+    margin-top: 15px;
+}
+
+.modal-actions button {
+    margin: 5px;
+    padding: 8px 14px;
 }
 
 table {
-    margin: auto;
-    background: white;
-    border-radius: 8px;
-    overflow: hidden;
     width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
 }
 
 th {
-    background: #667eea;
-    color: white;
+    background: #f5f5f5;
 }
 
-td {
-    background: #f9f9f9;
+.success-box {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.amount {
+    font-weight: bold;
+}
+
+.status-success {
+    color: green;
+    font-weight: bold;
+}
+
+.status-fail {
+    color: red;
+    font-weight: bold;
+}
+.card {
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+}
+button {
+    transition: 0.2s;
+}
+
+button:hover {
+    transform: scale(1.02);
+}
+
+/* TOAST NOTIFICATION */
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    min-width: 250px;
+    padding: 14px 18px;
+    border-radius: 8px;
+    color: white;
+    font-weight: 500;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+/* success */
+.toast.success {
+    background: linear-gradient(45deg, #22c55e, #16a34a);
+}
+
+/* error */
+.toast.error {
+    background: linear-gradient(45deg, #ef4444, #dc2626);
+}
+
+#passwordHint {
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+/* visible state */
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+/* SEND CARD */
+.send-card {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 25px;
+}
+
+/* SECTION TITLE */
+.section-title {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* INPUT SECTIONS */
+.input-section {
+    margin-bottom: 18px;
+}
+
+.input-section label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+    color: #555;
+}
+
+/* DIVIDER */
+.divider {
+    text-align: center;
+    margin: 15px 0;
+    position: relative;
+}
+
+.divider span {
+    background: white;
+    padding: 0 10px;
+    color: #888;
+    font-size: 12px;
+}
+
+.divider::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    border-top: 1px solid #ddd;
+    z-index: -1;
+}
+
+/* RECEIVER BOX */
+.receiver-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #f1f5f9;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+/* BUTTONS */
+.primary-btn {
+    width: 100%;
+    padding: 12px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.primary-btn:hover {
+    background: #1d4ed8;
+}
+
+.secondary-btn {
+    margin-top: 8px;
+    padding: 8px 12px;
+    border: none;
+    background: #e2e8f0;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.secondary-btn:hover {
+    background: #cbd5e1;
 }

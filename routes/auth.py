@@ -3,11 +3,21 @@ from utils.db import mysql
 from utils.security import hash_password
 from utils.security import check_password, generate_token
 from utils.security import verify_token
+import re
+
+def is_strong_password(password):
+    return (
+        len(password) >= 12 and
+        re.search(r'[A-Z]', password) and
+        re.search(r'\d', password) and
+        re.search(r'[@$!%*?&]', password)
+    )
 
 
 auth_bp = Blueprint('auth', __name__)
 
 @auth_bp.route('/register', methods=['POST'])
+
 def register():
     data = request.get_json()
 
@@ -18,7 +28,10 @@ def register():
     if not name or not email or not password:
         return jsonify({"error": "Missing fields"}), 400
 
-    hashed_pw = hash_password(password)
+    if not is_strong_password(password):
+        return jsonify({"error": "Password too weak"}), 400
+
+    hashed_pw = hash_password(password).decode('utf-8')
 
     cur = mysql.connection.cursor()
 
@@ -52,9 +65,16 @@ def login():
     cur.execute("SELECT user_id, password_hash FROM users WHERE email=%s", (email,))
     user = cur.fetchone()
 
-    if user and check_password(password, user[1].encode('utf-8')):
-        token = generate_token(user[0])
-        return jsonify({"token": token})
+    if user:
+        stored_hash = user[1]
+
+        # CRITICAL FIX
+        if isinstance(stored_hash, str):
+            stored_hash = stored_hash.encode('utf-8')
+
+        if check_password(password, stored_hash):
+            token = generate_token(user[0])
+            return jsonify({"token": token})
 
     return jsonify({"error": "Invalid credentials"}), 401
 
@@ -74,4 +94,27 @@ def get_user():
     cur.execute("SELECT name FROM users WHERE user_id=%s", (user_id,))
     user = cur.fetchone()
 
-    return jsonify({"name": user[0]})
+    return jsonify({
+        "user_id": user_id,
+        "name": user[0]
+    })
+
+@auth_bp.route('/get-user', methods=['POST'])
+def get_user_by_email():
+    data = request.get_json()
+    email = data.get('email')
+
+    if not email:
+        return jsonify({"error": "Email required"}), 400
+
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT user_id, name FROM users WHERE email=%s", (email,))
+    user = cur.fetchone()
+
+    if user:
+        return jsonify({
+            "user_id": user[0],
+            "name": user[1]
+        })
+
+    return jsonify({"error": "User not found"}), 404

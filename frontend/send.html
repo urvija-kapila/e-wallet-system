@@ -3,22 +3,92 @@
 <head>
     <title>Send Money</title>
     <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.js"></script>
 </head>
+
 <body>
-<div class="container">
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <div class="logo">💳 E-Wallet</div>
+    <div class="nav-right">
+        <span id="nav-user">Hi...</span>
+        <button onclick="logout()">Logout</button>
+    </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
     <h2>Send Money</h2>
 
-    <input type="number" id="receiver" placeholder="Receiver ID"><br><br>
-    <input type="number" id="amount" placeholder="Amount"><br><br>
-    <input type="password" id="password" placeholder="Enter your password to confirm"><br><br>
+    <div class="card send-card">
 
-    <button type="button" onclick="sendMoney()">Send</button>
+        <h3 class="section-title">Send Money</h3>
 
-    <p id="message"></p>
+        <!-- EMAIL FLOW -->
+        <div id="emailSection" class="input-section">
+            <label>Search by Email</label>
+            <input type="email" id="email" placeholder="Enter receiver email">
+            <button class="secondary-btn" onclick="findUser()">Find User</button>
+        </div>
+
+        <!-- OR DIVIDER -->
+        <div class="divider">
+            <span>OR</span>
+        </div>
+
+        <!-- QR FLOW -->
+        <div id="qrSection" class="input-section">
+            <label>Scan QR Code</label>
+            <input type="file" id="qrInput" accept="image/*">
+            <button class="secondary-btn" onclick="scanQR()">Scan QR</button>
+        </div>
+
+        <!-- RECEIVER DISPLAY -->
+        <div id="receiverBox" class="receiver-box" style="display:none;">
+            <span>👤</span>
+            <p id="receiverName"></p>
+        </div>
+
+        <!-- AMOUNT -->
+        <div class="input-section">
+            <label>Amount</label>
+            <input type="number" id="amount" placeholder="Enter amount">
+        </div>
+
+        <!-- PRIMARY ACTION -->
+        <button class="primary-btn" onclick="proceedPayment()">Proceed to Pay</button>
+
+    </div>
 
     <br>
-    <button onclick="goBack()">Back to Dashboard</button>
+    <button class="card-btn" onclick="goBack()">← Back to Dashboard</button>
+
 </div>
+<div id="paymentModal" class="modal">
+    <div class="modal-content">
+        <h3>Confirm Payment</h3>
+
+        <p id="confirmText"></p>
+
+        <input type="password" id="confirmPassword" placeholder="Enter your password" />
+
+        <div class="modal-actions">
+            <button onclick="confirmPayment()">Confirm</button>
+            <button onclick="closeModal()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<div id="successBox" class="success-box">
+    <h2>✅ Payment Successful</h2>
+    <p id="successText"></p>
+    <button onclick="goToDashboard()">Back to Dashboard</button>
+</div>
+
+
 <script src="js/send.js"></script>
+
 </body>
 </html>

@@ -3,24 +3,52 @@
 <head>
     <title>Dashboard</title>
     <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
+
 <body>
-<div class="container">
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <div class="logo">💳 E-Wallet</div>
+    <div class="nav-right">
+        <span id="nav-user">Hi...</span>
+        <button onclick="logout()">Logout</button>
+    </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
 
     <h2>Dashboard</h2>
+    <p id="username">Welcome...</p>
 
-    <h3 id="username">Welcome...</h3>
+    <div class="dashboard-grid">
 
-    <h3>Your Balance:</h3>
-    <p id="balance">Loading...</p>
+        <!-- LEFT: BALANCE -->
+        <div class="card balance-card">
+            <p class="label">Available Balance</p>
+            <h1 id="balance">₹ 0</h1>
+        </div>
 
-    <br>
+        <!-- RIGHT: ACTIONS -->
+        <div class="card">
+            <h3>Quick Actions</h3>
+            <button onclick="goToSend()">💸 Send Money</button>
+            <button onclick="goToHistory()">📜 Transactions</button>
+            <button onclick="showQR()">📱 Show My QR</button>
+        </div>
 
-    <button onclick="goToSend()">Send Money</button>
-    <button onclick="goToHistory()">Transaction History</button>
-    <button onclick="logout()">Logout</button>
+    </div>
+
+    <div id="qrBox" style="margin-top:20px; display:none;">
+        <h3>Your QR</h3>
+        <div id="qrcode"></div>
+    </div>
 
 </div>
+
 <script src="js/dashboard.js"></script>
+
 </body>
 </html>

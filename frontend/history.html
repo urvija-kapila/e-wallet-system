@@ -4,11 +4,22 @@
     <title>Transaction History</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
+
 <body>
-<div class="container">
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <div class="logo">💳 E-Wallet</div>
+    <div class="nav-right">
+        <span id="nav-user">Hi...</span>
+        <button onclick="logout()">Logout</button>
+    </div>
+</div>
+
+<div class="card">
     <h2>Transaction History</h2>
 
-    <table border="1" align="center">
+    <table>
         <thead>
             <tr>
                 <th>ID</th>
@@ -19,13 +30,16 @@
                 <th>Time</th>
             </tr>
         </thead>
-        <tbody id="historyTable">
-        </tbody>
+        <tbody id="history-body"></tbody>
     </table>
+</div>
 
     <br>
-    <button onclick="goBack()">Back to Dashboard</button>
+    <button class="card-btn" onclick="goBack()">← Back to Dashboard</button>
+
 </div>
+
 <script src="js/history.js"></script>
+
 </body>
 </html>

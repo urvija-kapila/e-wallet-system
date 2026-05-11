@@ -1,3 +1,14 @@
+function showToast(message, type = "success") {
+    const toast = document.getElementById("toast");
+
+    toast.innerText = message;
+    toast.className = "toast show " + type;
+
+    setTimeout(() => {
+        toast.className = "toast";
+    }, 3000);
+}
+
 function login() {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
@@ -14,13 +25,14 @@ function login() {
     })
     .then(res => res.json())
     .then(data => {
-        console.log(data);
-
         if (data.token) {
             localStorage.setItem("token", data.token);
             window.location.href = "dashboard.html";
         } else {
-            document.getElementById("message").innerText = data.error;
+            showToast(data.error || "Login failed", "error");
         }
+    })
+    .catch(() => {
+        showToast("Server error", "error");
     });
 }
