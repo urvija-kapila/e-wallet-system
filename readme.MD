@@ -153,7 +153,7 @@ Open in browser:
 ```text
 http://127.0.0.1:5500/frontend/index.html
 ```
-
+or simply right-click frontend/index.html and choose Open with Live Server.
 ---
 
 # 📊 Modules Implemented
